@@ -1,0 +1,12 @@
+Q37: Nth Highest Salary
+
+import pandas as pd
+
+def nth_highest_salary(employee: pd.DataFrame, N: int) -> pd.DataFrame:
+    df = employee.drop_duplicates(['salary'])
+    if len(df) < N:
+        return pd.DataFrame({f'getNthHighestSalary({N})' : [None]})
+    # df.sort_values(by= ['salary'], ascending= False, inplace = True)
+    df['rnk'] = df['salary'].rank(method='dense', ascending = False)
+    df = df[df['rnk']==N]
+    return df[['salary']].rename(columns= {'salary': f'getNthHighestSalary({N})'})
